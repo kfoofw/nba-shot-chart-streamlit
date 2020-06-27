@@ -1,6 +1,6 @@
-from nba_api.stats.endpoints import shotchartdetail
-import json
+# from nba_api.stats.endpoints import shotchartdetail
 import requests
+import json
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
@@ -17,16 +17,52 @@ player_dict["Trae Young"] = 1629027
 player_dict["Steph Curry"] = 201939
 player_dict["Kawhi Leonard"] = 202695
 
+# URL for requests
+headers = {
+		'Host': 'stats.nba.com',
+		'Connection': 'keep-alive',
+		'Accept': 'application/json, text/plain, */*',
+		'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36',
+		'Referer': 'https://stats.nba.com/',
+		"x-nba-stats-origin": "stats",
+		"x-nba-stats-token": "true",
+		'Accept-Encoding': 'gzip, deflate, br',
+		'Accept-Language': 'en-US,en;q=0.9',
+	}
+
+url_base = 'https://stats.nba.com/stats/shotchartdetail'
+
 # Set cache for data pull
 @st.cache 
 def pull_data(player_id, season_type):
+	parameters = {
+		'ContextMeasure': 'FGA',
+		'LastNGames': 0,
+		'LeagueID': '00',
+		'Month': 0,
+		'OpponentTeamID': 0,
+		'Period': 0,
+		'PlayerID': player_id,
+		'SeasonType': season_type,
+		'TeamID': 0,
+		'VsDivision': '',
+		'VsConference': '',
+		'SeasonSegment': '',
+		'Season': '2018-19',
+		'RookieYear': '',
+		'PlayerPosition': '',
+		'Outcome': '',
+		'Location': '',
+		'GameSegment': '',
+		'GameId': '',
+		'DateTo': '',
+		'DateFrom': ''
+	}
 	
-	response = shotchartdetail.ShotChartDetail(
-			team_id=0,
-			player_id=player_id,
-			season_nullable='2018-19',
-			season_type_all_star = season_type)
+	response = requests.get(url_base, params=parameters, headers=headers)
+
 	return response
+
 
 # Default to James Harden
 player_id = 201935
@@ -51,7 +87,7 @@ else:
 response = pull_data(player_id, season_type)
 
 # Get json
-content = json.loads(response.get_json())
+content = json.loads(response.content)
 
 # Obtain relevant data
 headers = content["resultSets"][0]["headers"]
