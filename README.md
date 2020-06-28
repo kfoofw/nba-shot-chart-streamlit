@@ -3,10 +3,10 @@ This app was created as part of an exploration of the [`Streamlit`](https://www.
 
 The app utilises the functionalities of `streamlit` with instantaneous app updates via widgets interaction. By interacting with the widget settings (player name, season type, season year), the app pulls data from [the NBA Stats website](https://stats.nba.com/) with pretty fast updates!
 
-Check it out for your self!
+Check it out for yourself!
 
 <p align = "center">
-    <img src="./img/app_screenshot.png" width = 500>
+    <img src="./img/app_screenshot.png" width = 800>
 </p>
 
 ## Method 1
