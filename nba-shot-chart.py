@@ -13,9 +13,12 @@ import streamlit as st
 player_dict = {}
 player_dict["James Harden"] = 201935
 player_dict["Lebron James"] = 2544
+player_dict["Kobe Bryant"] = 977
 player_dict["Trae Young"] = 1629027
 player_dict["Steph Curry"] = 201939
 player_dict["Kawhi Leonard"] = 202695
+player_dict["Giannis Antetokounmpo"] = 203507
+player_dict["Luka Doncic"] = 1629029
 
 # URL for requests
 headers = {
@@ -34,7 +37,7 @@ url_base = 'https://stats.nba.com/stats/shotchartdetail'
 
 # Set cache for data pull
 @st.cache 
-def pull_data(player_id, season_type):
+def pull_data(player_id, season_type, season_year):
 	parameters = {
 		'ContextMeasure': 'FGA',
 		'LastNGames': 0,
@@ -48,7 +51,7 @@ def pull_data(player_id, season_type):
 		'VsDivision': '',
 		'VsConference': '',
 		'SeasonSegment': '',
-		'Season': '2018-19',
+		'Season': season_year,
 		'RookieYear': '',
 		'PlayerPosition': '',
 		'Outcome': '',
@@ -64,28 +67,49 @@ def pull_data(player_id, season_type):
 	return response
 
 
-# Default to James Harden
-player_id = 201935
+# Default parameters for initialisation
+# Note that default params should be the first option in widgets
+player_id = 202695
 season_type = "Regular Season"
+season_year= "2018-19"
+
+#########################################
+# Side bar interactive widgets
+#########################################
+# Side bar Header
+st.sidebar.header("Configure your player shot chart below!")
+st.sidebar.markdown(":sunglasses: :basketball:")
 
 # Player Radio Button
-player_name = st.radio(
+player_name = st.sidebar.radio(
 	"Whose shot chart do you want to see?",
-	('James Harden', 'Lebron James', 'Trae Young', "Steph Curry", "Kawhi Leonard"))
+	('Kawhi Leonard', 'James Harden', 'Kobe Bryant','Lebron James', 'Steph Curry', 'Giannis Antetokounmpo','Trae Young', 'Luka Doncic'))
 player_id = player_dict[player_name]
 
 # Season Radio Button
-season_selection = st.radio(
-	"Which season type do you prefer",
+season_type_selection = st.sidebar.radio(
+	"Which season type do you prefer?",
 	('Regular Season', 'Playoffs'))
 
-if season_selection == "Regular Season":
+if season_type_selection == "Regular Season":
 	season_type = "Regular Season"
 else:
 	season_type = "Playoffs"
 
-response = pull_data(player_id, season_type)
+# Season year slider
+season_year_slider = st.sidebar.slider("Which season year?", 
+					min_value = 2008, 
+					max_value = 2019, 
+					value = 2018)
 
+season_year_back_suffix = str(season_year_slider+1)[-2:]
+season_year = str(season_year_slider) +"-" +season_year_back_suffix
+
+response = pull_data(player_id, season_type, season_year)
+
+#########################################
+# Pull data from nba website
+#########################################
 # Get json
 content = json.loads(response.content)
 
@@ -96,6 +120,8 @@ shots = content["resultSets"][0]["rowSet"]
 # Create dataframe
 shot_df = pd.DataFrame(shots, columns = headers)
 
+#########################################
+# Plot data
 #########################################
 def draw_court(ax=None, color='black', lw=2, outer_lines=False):
     # If an axes object isn't provided to plot onto, just get current one
@@ -186,9 +212,11 @@ ax.set_ylim(422.5, -47.5)
 ax.set_xlabel('')
 ax.set_ylabel('')
 ax.tick_params(labelbottom='off', labelleft='off')
+###########################################
 
+# Plot execution
 
-st.subheader('NBA Shot Chart for ' + player_name + " in 2018-19 " + season_selection)
+st.subheader('NBA Shot Chart for ' + player_name + " in "+ season_year + " " + season_type_selection)
 
 st.pyplot()
 
