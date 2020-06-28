@@ -9,7 +9,7 @@ Check it out for yourself!
     <img src="./img/app_screenshot.png" width = 800>
 </p>
 
-## Method 1
+## Deployment Method 1
 To set up the app, clone the repo and install the requirements. Thereafter, you can run the `streamlit` command to set it up, and open the relevant url on your local browser.
 
 ```
@@ -22,9 +22,9 @@ cd nba-shot-chart-streamlit
 pip install -r requirements.txt
 
 # Use streamlit to set up the app
-streamlit run nba_shot_chart.py
+streamlit run nba-shot-chart.py
 ```
-## Method 2
+## Deployment Method 2
 To run the app with Docker (assuming you have it installed), clone the repo and build the image.
 
 ```
@@ -38,3 +38,7 @@ docker build -t nba-shot-chart-streamlit .
 ```
 
 Open the resultant url to access the app locally. Enjoy!
+
+## Special Mention!
+Special credit to Savvas Tjortjoglou for the Matplotlib charts.
+Check out his awesome blog post here: http://savvastjortjoglou.com/nba-shot-sharts.html
