@@ -192,9 +192,13 @@ def draw_court(ax=None, color='black', lw=2, outer_lines=False):
     return ax
 
 # create our jointplot
-cmap=plt.cm.gist_heat_r
+# color selection for season_type
+if season_type == "Regular Season":
+	color_selection = plt.cm.gist_heat_r(0.2)
+else:
+	color_selection = plt.cm.winter(0.1)
 joint_shot_chart = sns.jointplot(shot_df.LOC_X, shot_df.LOC_Y, stat_func=None,
-                                 kind='scatter', space=0, alpha=0.5, color=cmap(.2))
+                                 kind='scatter', space=0, alpha=0.5, color=color_selection)
 
 joint_shot_chart.fig.set_size_inches(12,11)
 
