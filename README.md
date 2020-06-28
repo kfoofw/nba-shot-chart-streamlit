@@ -9,6 +9,8 @@ Check it out for yourself!
     <img src="./img/nba-shot-chart-streamlit.gif" width = 800>
 </p>
 
+__Special Note:__ I tried deploying this on a Heroku container and AWS EC2 instance, but the live data scrapping/updates does not work. This is because the NBA Stats website apparently has a blacklist of IP addresses that includes them. Others have faced similar issues with this when they deployed similar live scrapping instances on cloud service providers as shown [here](https://www.reddit.com/r/sportsanalytics/comments/77xjhn/nba_stats_api_blocking_aws/).
+
 ## Deployment Method 1
 To set up the app, clone the repo and install the requirements. Thereafter, you can run the `streamlit` command to set it up, and open the relevant url on your local browser.
 
