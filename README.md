@@ -6,7 +6,7 @@ The app utilises the functionalities of `streamlit` with instantaneous app updat
 Check it out for yourself!
 
 <p align = "center">
-    <img src="./img/app_screenshot.png" width = 800>
+    <img src="./img/nba-shot-chart-streamlit.gif" width = 800>
 </p>
 
 ## Deployment Method 1
